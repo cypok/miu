@@ -2,55 +2,89 @@ require 'miu.rb'
 
 describe "Make It Ugly" do
   describe "adding braces" do
-    it "should replace simple 'if (...)\\nblah'" do
+    it "should work" do
       add_braces_to( <<-eof
                     // some code
-                    if (true)
-                        blah();
+                    if (expr)
+                        func();
                     // some other
       eof
       ).should == <<-eof
                     // some code
-                    if (true)
+                    if (expr)
                     {
-                        blah();
+                        func();
                     }
                     // some other
       eof
     end
 
-    it "should replace simple 'if (big condition)\\nblah'" do
+    it "should replace IFs with function calls" do
       add_braces_to( <<-eof
                     // some code
-                    if (really_big_condition() != false)
-                        blah();
+                    if (call() != false)
+                        expr();
                     // some other
       eof
       ).should == <<-eof
                     // some code
-                    if (really_big_condition() != false)
+                    if (call() != false)
                     {
-                        blah();
+                        expr();
                     }
                     // some other
       eof
     end
 
-    it "should replace simple 'if (...)\\nblah(...)'" do
+    it "should work with comments after func" do
       add_braces_to( <<-eof
                     // some code
-                    if (true)
-                      blah( some, args );
-                      stupid_func();
+                    if (expr)
+                      func(); // comment
                     // some other
       eof
       ).should == <<-eof
                     // some code
-                    if (true)
+                    if (expr)
                     {
-                      blah( some, args );
+                      func(); // comment
                     }
-                      stupid_func();
+                    // some other
+      eof
+    end
+
+    it "should work with comments after if" do
+      add_braces_to( <<-eof
+                    // some code
+                    if (expr) // comment
+                      func();
+                    // some other
+      eof
+      ).should == <<-eof
+                    // some code
+                    if (expr) // comment
+                    {
+                      func();
+                    }
+                    // some other
+      eof
+    end
+
+    it "should work with multy line IFs" do
+      add_braces_to( <<-eof
+                    // some code
+                    if (expr() &&
+                        some_other())
+                      func();
+                    // some other
+      eof
+      ).should == <<-eof
+                    // some code
+                    if (expr() &&
+                        some_other())
+                    {
+                      func();
+                    }
                     // some other
       eof
     end
