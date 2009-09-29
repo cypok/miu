@@ -2,21 +2,23 @@ require 'miu.rb'
 
 describe "Make It Ugly" do
   describe "adding braces" do
-    it "should work" do
-      add_braces_to( <<-eof
-                    // some code
-                    if (expr)
-                        func();
-                    // some other
-      eof
-      ).should == <<-eof
-                    // some code
-                    if (expr)
-                    {
-                        func();
-                    }
-                    // some other
-      eof
+    %w{if while for}.each do |name|
+      it "should work with #{name.upcase}" do
+        add_braces_to( <<-eof
+                      // some code
+                      #{name} (expr)
+                          func();
+                      // some other
+        eof
+        ).should == <<-eof
+                      // some code
+                      #{name} (expr)
+                      {
+                          func();
+                      }
+                      // some other
+        eof
+      end
     end
 
     it "should replace IFs with function calls" do
