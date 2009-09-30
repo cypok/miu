@@ -5,7 +5,7 @@ COMMENT = /\/\/.*?/.freeze
 ONE_LINE_IF = /^( *)((?:else|(?:if|while|for) *\([^;]+?\)) *(?:#{COMMENT})?)\n( *)([^;\n]*; *(?:#{COMMENT})?)\n/m
 ONE_LINE_IF_REPLACER = '\1\2\n\1{\n\3\4\n\1}\n'.gsub( '\n', "\n" )
 
-RIGHT_CONSTANT = /((?:if|while) *\( *)([-+A-Za-z0-9_() ]*?)( *[!=]{2,2} *)([A-Z0-9_]+)( *\) *(?:#{COMMENT})?)/
+RIGHT_CONSTANT = /((?:if|while) *\( *)((?:->|<<|>>|[-+*%!.:A-Za-z0-9_()\[\] ])*?)( *[!=]{2,2} *)([A-Z0-9_]+)( *\) *(?:#{COMMENT})?)/
 RIGHT_CONSTANT_REPLACER = '\1\4\3\2\5'
 
 def add_braces_to(text)

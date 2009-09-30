@@ -148,7 +148,7 @@ describe "Make It Ugly" do
     end
 
     it "should process function calls" do
-      swap_conditions_in("if (func(a) == ZERO)").should == "if (ZERO == func(a))"
+      swap_conditions_in("if (func( a ) == ZERO)").should == "if (ZERO == func( a ))"
     end
 
     it "should process function calls" do
@@ -159,9 +159,16 @@ describe "Make It Ugly" do
       swap_conditions_in("if (a && c == D)").should == "if (a && c == D)"
     end
 
-    it "should work" do
-      swap_conditions_in("if (result != D3D_OK)").should == "if (D3D_OK != result)"
+    it "should work with . and ->" do
+      swap_conditions_in("if (result.smth->a != OK)").should == "if (OK != result.smth->a)"
     end
-    
+
+    it "should work with []" do
+      swap_conditions_in("if (result[i] != OK)").should == "if (OK != result[i])"
+    end
+
+    it "should work with '>>'" do
+      swap_conditions_in("if (i << 2 != OK)").should == "if (OK != i << 2)"
+    end
   end
 end
