@@ -109,6 +109,29 @@ describe "Make It Ugly" do
                     // some other
       eof
     end
+
+    it "should replace IFs and ELSEs" do
+      add_braces_to( <<-eof
+                    // some code
+                    if (val != false)
+                        expr();
+                    else
+                        other();
+                    // some other
+      eof
+      ).should == <<-eof
+                    // some code
+                    if (val != false)
+                    {
+                        expr();
+                    }
+                    else
+                    {
+                        other();
+                    }
+                    // some other
+      eof
+    end
   end
 
   describe "swapping constants at right" do
