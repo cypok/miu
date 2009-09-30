@@ -110,4 +110,35 @@ describe "Make It Ugly" do
       eof
     end
   end
+
+  describe "swapping constants at right" do
+    %w{if while}.each do |val|
+      it "should work with '#{val}'" do
+        swap_conditions_in("#{val}(value == ZERO)").should == "#{val}(ZERO == value)"
+      end
+    end
+
+    %w{== !=}.each do |val|
+      it "should work with '#{val}'" do
+        swap_conditions_in("if(value #{val} ZERO)").should == "if(ZERO #{val} value)"
+      end
+    end
+
+    it "should process function calls" do
+      swap_conditions_in("if (func(a) == ZERO)").should == "if (ZERO == func(a))"
+    end
+
+    it "should process function calls" do
+      swap_conditions_in("if (func(2+4, A == B) == ZERO)").should == "if (func(2+4, A == B) == ZERO)"
+    end
+
+    it "should not process double if's" do
+      swap_conditions_in("if (a && c == D)").should == "if (a && c == D)"
+    end
+
+    it "should work" do
+      swap_conditions_in("if (result != D3D_OK)").should == "if (D3D_OK != result)"
+    end
+    
+  end
 end
