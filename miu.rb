@@ -1,14 +1,11 @@
 #!/usr/bin/ruby
 
 OPERATORS = /if|while|for/.freeze
-COMMENT = /\/\/.*|\/\*.*\*\//
+COMMENT = /\/\/.*|\/\*.*\*\//.freeze
 
-def addn(s)
-  s.gsub '\n', "\n"
-end
+ONE_LINE_IF = /^( *)((?:#{OPERATORS}) *\(.+?\) *(?:#{COMMENT})?)\n( *)([^;\n]*; *(?:#{COMMENT})?)\n/m
+ONE_LINE_IF_REPLACER = '\1\2\n\1{\n\3\4\n\1}\n'.gsub( '\n', "\n" )
 
 def add_braces_to(text)
-  text.gsub /^( *)((?:#{OPERATORS}) *\(.+\) *(?:#{COMMENT})?)\n( *)([^;]*; *(?:#{COMMENT})?)\n/m, addn( '\1\2\n\1{\n\3\4\n\1}\n' )
+  text.gsub ONE_LINE_IF, ONE_LINE_IF_REPLACER
 end
-
-

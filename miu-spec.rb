@@ -90,5 +90,24 @@ describe "Make It Ugly" do
                     // some other
       eof
     end
+
+    it "should not replace already braced" do
+      add_braces_to( <<-eof
+                    // some code
+                    if (false)
+                    {
+                        expr();
+                    }
+                    // some other
+      eof
+      ).should == <<-eof
+                    // some code
+                    if (false)
+                    {
+                        expr();
+                    }
+                    // some other
+      eof
+    end
   end
 end
