@@ -174,5 +174,16 @@ describe "Make It Ugly" do
     it "should work with comments" do
       swap_conditions_in("if (var != OK) // it's great").should == "if (OK != var) // it's great"
     end
+
+    it "should not process ifs in more than one lines" do
+      add_braces_to( <<-eof
+                    if (val > false)
+                        if (other == ERROR)
+      eof
+      ).should == <<-eof
+                    if (val > false)
+                        if (other == ERROR)
+      eof
+    end
   end
 end
