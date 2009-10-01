@@ -152,7 +152,7 @@ describe "Make It Ugly" do
     end
 
     it "should process function calls" do
-      swap_conditions_in("if (func(2+4, A == B) == ZERO)").should == "if (func(2+4, A == B) == ZERO)"
+      swap_conditions_in("if (func(2+4, A == B) == ZERO)").should == "if (ZERO == func(2+4, A == B))"
     end
 
     it "should not process double if's" do
@@ -169,6 +169,10 @@ describe "Make It Ugly" do
 
     it "should work with '>>'" do
       swap_conditions_in("if (i << 2 != OK)").should == "if (OK != i << 2)"
+    end
+
+    it "should work with comments" do
+      swap_conditions_in("if (var != OK) // it's great").should == "if (OK != var) // it's great"
     end
   end
 end
