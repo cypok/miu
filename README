@@ -8,7 +8,8 @@
 
 
 ИСПОЛЬЗОВАНИЕ.
-  $ ./miu.rb file1.cpp file2.c
+  Прежде всего нужно иметь установленный ruby (http://www.ruby-lang.org/en/downloads/)
+  $ ruby miu.rb file1.cpp file2.c
 
 ТЕСТЫ.
   $ spec miu-spec.rb
