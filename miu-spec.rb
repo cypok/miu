@@ -55,6 +55,27 @@ describe "Make It Ugly" do
       eof
     end
 
+    it "should work with multy line functions" do
+      add_braces_to( <<-eof
+                    // some code
+                    if (expr)
+                      func( a,
+                            b
+                      );
+                    // some other
+      eof
+      ).should == <<-eof
+                    // some code
+                    if (expr)
+                    {
+                      func( a,
+                            b
+                      );
+                    }
+                    // some other
+      eof
+    end
+
     it "should work with comments after func" do
       add_braces_to( <<-eof
                     // some code

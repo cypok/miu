@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
 
-COMMENT = /\/\/.*?/.freeze
+COMMENT = /\/\/[^\n]*?/.freeze
 
-ONE_LINE_IF = /^( *)((?:else|(?:if|while) *\([^;]+?\)|for *\([^\n]+?\)) *(?:#{COMMENT})?)\n( *)([^;\n]*; *(?:#{COMMENT})?)\n/m
+ONE_LINE_IF = /^( *)((?:else|(?:if|while) *\([^;]+?\)|for *\([^\n]+?\)) *(?:#{COMMENT})?)\n( *)([^;{}]*; *(?:#{COMMENT})?)\n/m
 ONE_LINE_IF_REPLACER = '\1\2\n\1{\n\3\4\n\1}\n'.gsub( '\n', "\n" )
 
 RIGHT_CONSTANT = /((?:if|while) *\( *)([^&|\n]*?)( *[!=]{2,2} *)([A-Z0-9_]+)( *\) *(?:#{COMMENT})?)$/
