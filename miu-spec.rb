@@ -110,6 +110,25 @@ describe "Make It Ugly" do
       eof
     end
 
+    it "should work with comments on next line after if" do
+      add_braces_to( <<-eof
+                    // some code
+                    if (expr)
+                      // comment
+                      func();
+                    // some other
+      eof
+      ).should == <<-eof
+                    // some code
+                    if (expr)
+                    {
+                      // comment
+                      func();
+                    }
+                    // some other
+      eof
+    end
+
     it "should work with multy line IFs" do
       add_braces_to( <<-eof
                     // some code
@@ -211,6 +230,14 @@ describe "Make It Ugly" do
 
     it "should work with comments" do
       swap_conditions_in("if (var != OK) // it's great").should == "if (OK != var) // it's great"
+    end
+
+    it "should work with '<='" do
+      swap_conditions_in("if (var <= OK) // it's great").should == "if (OK >= var) // it's great"
+    end
+
+    it "should work with '>'" do
+      swap_conditions_in("if (var > OK) // it's great").should == "if (OK < var) // it's great"
     end
 
     it "should not process ifs in more than one lines" do
