@@ -55,6 +55,23 @@ describe "Make It Ugly" do
       eof
     end
 
+    it "should replace IFs with division" do
+      add_braces_to( <<-eof
+                    // some code
+                    if (a/5 != 1)
+                        expr();
+                    // some other
+      eof
+      ).should == <<-eof
+                    // some code
+                    if (a/5 != 1)
+                    {
+                        expr();
+                    }
+                    // some other
+      eof
+    end
+
     it "should work with multy line functions" do
       add_braces_to( <<-eof
                     // some code
@@ -189,6 +206,36 @@ describe "Make It Ugly" do
                     // some other
       eof
     end
+
+    it "should not process ifs in more than one lines" do
+      add_braces_to( <<-eof
+                    if (val > false)
+                        if (other == ERROR)
+      eof
+      ).should == <<-eof
+                    if (val > false)
+                        if (other == ERROR)
+      eof
+    end
+
+    it "should not add unnecessery braces [WAS A BUG]" do
+      add_braces_to( <<-eof
+                    if ( SMTH )
+                    {
+                        // blah (really)
+                        // blah
+                        foo();
+                    }
+      eof
+      ).should == <<-eof
+                    if ( SMTH )
+                    {
+                        // blah (really)
+                        // blah
+                        foo();
+                    }
+      eof
+    end
   end
 
   describe "swapping constants at right" do
@@ -238,17 +285,6 @@ describe "Make It Ugly" do
 
     it "should work with '>'" do
       swap_conditions_in("if (var > OK) // it's great").should == "if (OK < var) // it's great"
-    end
-
-    it "should not process ifs in more than one lines" do
-      add_braces_to( <<-eof
-                    if (val > false)
-                        if (other == ERROR)
-      eof
-      ).should == <<-eof
-                    if (val > false)
-                        if (other == ERROR)
-      eof
     end
   end
 end

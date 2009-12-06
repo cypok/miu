@@ -2,7 +2,7 @@
 
 COMMENT = /\/\/[^\n]*?/.freeze
 
-ONE_LINE_IF = /^( *)((?:else|(?:if|while) *\([^;]+?\)|for *\([^\n]+?\)) *(?:#{COMMENT})?)\n( *)([^;{}]*; *(?:#{COMMENT})?)\n/m
+ONE_LINE_IF = /^( *)((?:else|(?:if|while) *\((?:[^;\/]|\/(?!\/))+?\)|for *\([^\n]+?\)) *(?:#{COMMENT})?)\n( *)([^;{}]*; *(?:#{COMMENT})?)\n/m
 
 RIGHT_CONSTANT = /((?:if|while) *\( *)([^&|\n]*?)( *(?:>=?|<=?|==|!=) *)([A-Z0-9_]+)( *\) *(?:#{COMMENT})?)$/
 RIGHT_CONSTANT_L = /((?:if|while) *\( *)([^&|\n]*?)( *< *)([A-Z0-9_]+)( *\) *(?:#{COMMENT})?)$/
