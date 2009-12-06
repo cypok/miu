@@ -245,6 +245,12 @@ describe "Make It Ugly" do
       end
     end
 
+    %w{assert _ASSERT}.each do |val|
+      it "should work with '#{val}'" do
+        swap_conditions_in("#{val}(value == ZERO);").should == "#{val}(ZERO == value);"
+      end
+    end
+
     %w{== !=}.each do |val|
       it "should work with '#{val}'" do
         swap_conditions_in("if(value #{val} ZERO)").should == "if(ZERO #{val} value)"

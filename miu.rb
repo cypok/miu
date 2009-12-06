@@ -1,15 +1,16 @@
 #!/usr/bin/ruby
 
 COMMENT = /\/\/[^\n]*?/.freeze
+ASSERTS = /assert|_assert/i
 
-ONE_LINE_IF = /^( *)((?:else|(?:if|while) *\((?:[^;\/]|\/(?!\/))+?\)|for *\([^\n]+?\)) *(?:#{COMMENT})?)\n( *)([^;{}]*; *(?:#{COMMENT})?)\n/m
+ONE_LINE_IF = /^( *)((?:else|(?:if|while) *\((?:[^;\/]|\/(?!\/))+?\)|for *\([^\n]+?\)) *(?:#{COMMENT})?)\n( *)([^;{}]*; *(?:#{COMMENT})?)\n/mi
 
-RIGHT_CONSTANT = /((?:if|while) *\( *)([^&|\n]*?)( *(?:>=?|<=?|==|!=) *)([A-Z0-9_]+)( *\) *(?:#{COMMENT})?)$/
-RIGHT_CONSTANT_L = /((?:if|while) *\( *)([^&|\n]*?)( *< *)([A-Z0-9_]+)( *\) *(?:#{COMMENT})?)$/
-RIGHT_CONSTANT_LE = /((?:if|while) *\( *)([^&|\n]*?)( *<= *)([A-Z0-9_]+)( *\) *(?:#{COMMENT})?)$/
-RIGHT_CONSTANT_G = /((?:if|while) *\( *)([^&|\n]*?)( *> *)([A-Z0-9_]+)( *\) *(?:#{COMMENT})?)$/
-RIGHT_CONSTANT_GE = /((?:if|while) *\( *)([^&|\n]*?)( *>= *)([A-Z0-9_]+)( *\) *(?:#{COMMENT})?)$/
-RIGHT_CONSTANT_E_NE = /((?:if|while) *\( *)([^&|\n]*?)( *[!=]= *)([A-Z0-9_]+)( *\) *(?:#{COMMENT})?)$/
+RIGHT_CONSTANT =      /((?i)(?:if|while|#{ASSERTS})(?-i) *\( *)([^&|\n]*?)( *(?:>=?|<=?|==|!=) *)([A-Z0-9_]+)( *\) *;? *(?:#{COMMENT})?)$/
+RIGHT_CONSTANT_L =    /((?i)(?:if|while|#{ASSERTS})(?-i) *\( *)([^&|\n]*?)( *< *)([A-Z0-9_]+)( *\) *;? *(?:#{COMMENT})?)$/
+RIGHT_CONSTANT_LE =   /((?i)(?:if|while|#{ASSERTS})(?-i) *\( *)([^&|\n]*?)( *<= *)([A-Z0-9_]+)( *\) *;? *(?:#{COMMENT})?)$/
+RIGHT_CONSTANT_G =    /((?i)(?:if|while|#{ASSERTS})(?-i) *\( *)([^&|\n]*?)( *> *)([A-Z0-9_]+)( *\) *;? *(?:#{COMMENT})?)$/
+RIGHT_CONSTANT_GE =   /((?i)(?:if|while|#{ASSERTS})(?-i) *\( *)([^&|\n]*?)( *>= *)([A-Z0-9_]+)( *\) *;? *(?:#{COMMENT})?)$/
+RIGHT_CONSTANT_E_NE = /((?i)(?:if|while|#{ASSERTS})(?-i) *\( *)([^&|\n]*?)( *[!=]= *)([A-Z0-9_]+)( *\) *;? *(?:#{COMMENT})?)$/
 
 def add_braces_to(text)
   text.gsub! ONE_LINE_IF, '\1\2\n\1{\n\3\4\n\1}\n'.gsub( '\n', "\n" )
