@@ -40,7 +40,8 @@ def process_braces(text)
     puts "Following pretty-code would be replaced with ugly-braced-code"
     scans.map {|s| join_one_line_if_regexp_parts( s )}.each do |scan|
       puts "------------------------------"
-      puts "> It is:", scan, "> It will be:", add_braces_to( scan )
+      puts "> It is:", scan
+      puts "> It will be:", add_braces_to( scan )
     end
     puts "------------------------------"
     puts ">> Confirm? (y/yes/n/no)"
@@ -57,7 +58,8 @@ def process_constants(text)
     puts "Following pretty-code would be replaced with ugly-constants-on-left-code"
     scans.map {|s| join_right_constant_regexp_parts( s )}.each do |scan|
       puts "------------------------------"
-      puts "> It is:", scan, "> It will be:", swap_conditions_in( scan )
+      puts "> It is:", scan
+      puts "> It will be:", swap_conditions_in( scan )
     end
     puts "------------------------------"
     puts ">> Confirm? (y/yes/n/no)"
